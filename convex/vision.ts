@@ -3,6 +3,10 @@ import { action, mutation } from './_generated/server'
 import { analyzeImage } from './lib/nvidiaVision'
 import { evaluateSegregation } from './lib/segregationEngine'
 
+// Declare process so TypeScript compiles without @types/node
+// Convex actions run in a Node-like environment where process.env is available
+declare const process: { env: Record<string, string | undefined> }
+
 export const analyzeWasteImage = action({
   args: {
     imageBase64: v.string(),
@@ -12,7 +16,7 @@ export const analyzeWasteImage = action({
     binId: v.id('bins'),
   },
   handler: async (ctx, args) => {
-    const apiKey = (process as any).env.NVIDIA_API_KEY as string | undefined
+    const apiKey = process.env.NVIDIA_API_KEY
     if (!apiKey) throw new Error('NVIDIA_API_KEY not configured — set it in the Convex dashboard under Settings > Environment Variables')
 
     const bin = await ctx.runQuery(('bins:getById' as any), { id: args.binId })
