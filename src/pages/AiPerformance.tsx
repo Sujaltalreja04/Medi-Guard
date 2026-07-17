@@ -5,11 +5,6 @@ import StatusBadge from '../components/shared/StatusBadge'
 import KpiCard from '../components/shared/KpiCard'
 import { formatConfidence } from '../lib/utils'
 
-const DECISION_VIOLATIONS = ['PROBABLE_VIOLATION', 'CRITICAL_VIOLATION']
-
-function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
-}
 
 export default function AiPerformance() {
   const overview = useQuery(api.analytics.overview)

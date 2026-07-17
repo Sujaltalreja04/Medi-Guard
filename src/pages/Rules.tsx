@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
-import { Scale, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Scale, Loader2 } from 'lucide-react'
 import StatusBadge from '../components/shared/StatusBadge'
-import { WASTE_CLASSES, BIN_TYPES, DECISION_COLORS } from '../constants'
+import { WASTE_CLASSES, BIN_TYPES } from '../constants'
 import type { SegregationRule, Decision } from '../types'
 import { formatWasteClass } from '../lib/utils'
 
@@ -23,7 +23,6 @@ const NEXT_STATE: Record<string, Decision | null> = {
   UNKNOWN_ITEM: null,
 }
 
-const SENTINEL = '__no_rule__'
 
 export default function Rules() {
   const rules = useQuery(api.rules.list)

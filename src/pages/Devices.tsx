@@ -5,7 +5,7 @@ import KpiCard from '../components/shared/KpiCard'
 import { ConnectionBadge } from '../components/shared/StatusBadge'
 import { formatRelativeTime } from '../lib/utils'
 import {
-  Cpu, Wifi, WifiOff, AlertTriangle, Camera, Radio, HardDrive,
+  Cpu, Wifi, WifiOff, AlertTriangle, Camera, Radio,
 } from 'lucide-react'
 
 export default function Devices() {

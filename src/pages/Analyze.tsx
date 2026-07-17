@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useAction } from 'convex/react'
-import { Upload, Scan, Camera, Trash2, AlertTriangle, CheckCircle2, ChevronRight, Building2, Layers, Image as ImageIcon, X, RefreshCw, FlaskConical } from 'lucide-react'
+import { Upload, Scan, Camera, AlertTriangle, CheckCircle2, ChevronRight, Building2, Layers, X, RefreshCw, FlaskConical } from 'lucide-react'
 import { api } from '../../convex/_generated/api'
 import { DecisionBadge, SeverityBadge } from '../components/shared/StatusBadge'
 import { formatWasteClass, formatConfidence } from '../lib/utils'
@@ -110,9 +110,9 @@ export default function Analyze() {
       const res = await analyzeWasteImage({
         imageBase64: base64,
         mimeType: imageFile.type,
-        facilityId: facilityId as string,
+        facilityId: facilityId as any,
         department,
-        binId: binId as string,
+        binId: binId as any,
       })
 
       setResult(res as any)

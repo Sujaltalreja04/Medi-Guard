@@ -111,8 +111,6 @@ export const seed = mutation({
 
     const wasteClassNames = ['SYRINGE', 'NEEDLE_SHARP', 'GLOVES', 'FACE_MASK', 'GAUZE_DRESSING', 'MEDICINE_VIAL', 'AMPOULE', 'PLASTIC_BOTTLE', 'MEDICAL_CONTAINER', 'PAPER_PACKAGING', 'GENERAL_WASTE', 'UNKNOWN_ITEM']
 
-    const binTypeList = ['GENERAL_WASTE', 'SHARPS', 'INFECTIOUS', 'PHARMACEUTICAL', 'CHEMICAL', 'RECYCLABLE']
-
     const alertDefs: { severity: string, title: string, description: string, status: string }[] = [
       { severity: 'CRITICAL', title: 'Critical Segregation Violation - Syringe in General Waste', description: 'A syringe was detected in a General Waste bin at Emergency department. Immediate review required.', status: 'OPEN' },
       { severity: 'CRITICAL', title: 'Critical Segregation Violation - Needle in Infectious Waste', description: 'A needle/sharp was detected in an Infectious Waste bin at Pathology Lab. Hazardous mis-segregation.', status: 'OPEN' },
@@ -249,7 +247,7 @@ export const seed = mutation({
         activeAlerts: rand(1, 5),
         complianceScore: rand(78, 98),
         deviceUptime: randf(94, 99.9),
-      })
+      } as any)
       facilityIds.push(id)
     }
 
@@ -279,7 +277,7 @@ export const seed = mutation({
           openAlerts: rand(0, 2),
           warningThreshold: rand(70, 80),
           criticalThreshold: rand(90, 95),
-        })
+        } as any)
         binIds.push(id)
         binsByFacility[fi].push(id)
         if (!binsByDept[bp.dept]) binsByDept[bp.dept] = []
@@ -311,10 +309,10 @@ export const seed = mutation({
           softwareVersion: pick(softwareVersions),
           aiIntegrationVersion: 'v2.1.0',
           queueDepth: rand(0, 5),
-        })
+        } as any)
         deviceIds.push(id)
         deviceIdsByFacility[fi].push(id)
-        await ctx.db.patch(binIds[binIndex], { deviceId })
+        await ctx.db.patch(binIds[binIndex] as any, { deviceId } as any)
       }
     }
 
@@ -326,7 +324,7 @@ export const seed = mutation({
         category: wc.category,
         riskIndicator: wc.risk,
         requiresReview: wc.review,
-      })
+      } as any)
       wasteClassIds.push(id)
     }
 
@@ -342,7 +340,7 @@ export const seed = mutation({
         minimumConfidence: rule.confidence,
         effectiveDate: now - 90 * DAY,
         status: 'ACTIVE',
-      })
+      } as any)
     }
 
     // ===== USERS =====
@@ -353,7 +351,7 @@ export const seed = mutation({
         email: u.email,
         role: u.role,
         facilityId: u.role === 'FACILITY_ADMIN' ? facilityIds[0] : undefined,
-      })
+      } as any)
       userIds.push(id)
     }
 
@@ -420,7 +418,7 @@ export const seed = mutation({
           detectedClass,
           confidence,
           createdAt,
-        })
+        } as any)
 
         eventDbIds.push(eventDbId)
         eventIdStrings.push(eventId)
@@ -448,7 +446,7 @@ export const seed = mutation({
           latencyMs: rand(200, 3000),
           createdAt: completedAt - rand(1, 10) * MINUTE,
           completedAt,
-        })
+        } as any)
       }
     }
 
@@ -477,9 +475,6 @@ export const seed = mutation({
         resolvedAt = now - rand(1, 7) * DAY
       }
 
-      const alertBin = binIds.find(b => b === binId)
-      const alertBinData = alertBin ? await ctx.db.get(alertBin) : null
-
       await ctx.db.insert('alerts', {
         alertId,
         facilityId: facilityIds[fi],
@@ -497,7 +492,7 @@ export const seed = mutation({
         resolvedBy: ad.status === 'RESOLVED' ? pick(['Alex Chen', 'James Wilson', 'Maria Garcia']) : undefined,
         resolvedAt,
         createdAt: now - rand(1, 14) * DAY,
-      })
+      } as any)
     }
 
     // ===== REVIEWS =====
@@ -522,7 +517,7 @@ export const seed = mutation({
           notes: rd.notes,
           correctiveAction: rd.action,
           createdAt: now - rand(1, 20) * DAY,
-        })
+        } as any)
 
         if (rd.decision === 'CONFIRMED_VIOLATION' || rd.decision === 'CORRECT_DISPOSAL') {
           const reviewDecisionMap: Record<string, string> = {
@@ -533,7 +528,7 @@ export const seed = mutation({
             'WRONG_CLASSIFICATION': 'WRONG_CLASSIFICATION',
             'TEST_EVENT': 'TEST_EVENT',
           }
-          await ctx.db.patch(eventId, {
+          await ctx.db.patch(eventId as any, {
             reviewedBy: reviewer,
             reviewDecision: reviewDecisionMap[rd.decision],
             reviewNotes: rd.notes,
@@ -555,7 +550,7 @@ export const seed = mutation({
         resource: aa.resource,
         ipAddress: `${rand(10, 223)}.${rand(0, 255)}.${rand(0, 255)}.${rand(1, 254)}`,
         status: aa.status,
-      })
+      } as any)
     }
 
     // ===== NOTIFICATIONS =====
@@ -566,7 +561,7 @@ export const seed = mutation({
         description: nd.description,
         read: nd.read,
         createdAt: now - rand(0, 14) * DAY,
-      })
+      } as any)
     }
 
     // ===== DEVICE HEARTBEATS =====
@@ -578,7 +573,7 @@ export const seed = mutation({
           deviceId: deviceIds[di],
           timestamp: now - hoursAgo * HOUR,
           connection: connectionStatuses[di % connectionStatuses.length],
-        })
+        } as any)
       }
     }
 
@@ -596,7 +591,7 @@ export const seed = mutation({
           binId: binIds[bi],
           timestamp: now - daysAgo * DAY + rand(0, DAY - 1),
           fillLevel: currentFill,
-        })
+        } as any)
       }
     }
 
@@ -607,7 +602,7 @@ export const seed = mutation({
       version: 'v1.1.0',
       deployedAt: now - 60 * DAY,
       status: 'DEPRECATED',
-    })
+    } as any)
 
     await ctx.db.insert('modelVersions', {
       provider: 'NVIDIA',
@@ -615,6 +610,6 @@ export const seed = mutation({
       version: 'v1.0.0',
       deployedAt: now - 30 * DAY,
       status: 'ACTIVE',
-    })
+    } as any)
   },
 })

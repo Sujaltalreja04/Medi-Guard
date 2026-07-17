@@ -5,7 +5,7 @@ import ActivityFeed from '../components/shared/ActivityFeed'
 import StatusBadge from '../components/shared/StatusBadge'
 import {
   Trash2, Bell, AlertTriangle, CalendarDays, ShieldAlert,
-  Building2, Cpu, Activity, CheckCircle2,
+  Building2, Cpu,
 } from 'lucide-react'
 
 export default function Dashboard() {

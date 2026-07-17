@@ -5,16 +5,13 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend,
 } from 'recharts'
-import { BarChart3, Calendar, Loader2 } from 'lucide-react'
+import { Calendar, Loader2 } from 'lucide-react'
 import StatusBadge from '../components/shared/StatusBadge'
 
 const FILTERS = ['Today', '7 Days', '30 Days', '90 Days'] as const
 
 const PIE_COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
 
-function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
-}
 
 export default function Analytics() {
   const [range, setRange] = useState<string>('30 Days')
@@ -108,7 +105,7 @@ export default function Analytics() {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
               >
                 {wasteDistribution.map((_, i) => (
                   <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />

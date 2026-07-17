@@ -31,7 +31,7 @@ const statusVariants: Record<string, 'green' | 'red' | 'amber' | 'blue' | 'gray'
 export default function BinDetail() {
   const { binId } = useParams<{ binId: string }>()
   const navigate = useNavigate()
-  const bin = useQuery(api.bins.getById, { id: binId! })
+  const bin = useQuery(api.bins.getById, { id: binId! as any })
   const allEvents = useQuery(api.events.list)
 
   const binEvents = useMemo(() => {

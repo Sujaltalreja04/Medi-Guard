@@ -2,7 +2,7 @@ import { useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import StatusBadge from '../components/shared/StatusBadge'
 import {
-  Building2, MapPin, Hash, Cpu, CalendarDays,
+  Building2, MapPin,
   Bell, ShieldCheck, Layers,
 } from 'lucide-react'
 

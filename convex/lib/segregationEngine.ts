@@ -1,4 +1,4 @@
-import { Doc } from '../_generated/dataModel'
+import type { Doc } from '../_generated/dataModel'
 
 interface RuleInput {
   binType: string

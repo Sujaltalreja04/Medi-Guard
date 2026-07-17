@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../../convex/_generated/api'
 import FillBar from '../components/shared/FillBar'
 import StatusBadge from '../components/shared/StatusBadge'
-import { formatFillLevel } from '../lib/utils'
 import { Search, Filter, ChevronDown, Trash2 } from 'lucide-react'
 
 const binTypeLabels: Record<string, string> = {
@@ -16,7 +15,7 @@ const binTypeLabels: Record<string, string> = {
   RECYCLABLE: 'Recyclable',
 }
 
-const statusVariants: Record<string, 'green' | 'red' | 'amber' | 'blue'> = {
+const statusVariants: Record<string, 'green' | 'red' | 'amber' | 'blue' | 'gray'> = {
   ACTIVE: 'green',
   FULL: 'red',
   NEAR_CAPACITY: 'amber',

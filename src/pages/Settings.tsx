@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Settings as SettingsIcon, Brain, Bell, HardDrive, Activity, Wifi, Server, Database } from 'lucide-react'
+import { Settings as SettingsIcon, Brain, Bell, HardDrive, Activity, Wifi, Server } from 'lucide-react'
 import StatusBadge from '../components/shared/StatusBadge'
 
 interface ToggleSetting {

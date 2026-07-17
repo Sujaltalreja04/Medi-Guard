@@ -1,28 +1,9 @@
 import { useQuery } from 'convex/react'
-import { Monitor, Thermometer, Wifi, WifiOff, AlertTriangle, Trash2, Building2, HardDrive, ScanLine, BrainCircuit } from 'lucide-react'
+import { Thermometer, Wifi, WifiOff, AlertTriangle, Trash2, Building2, HardDrive, ScanLine, BrainCircuit } from 'lucide-react'
 import { api } from '../../convex/_generated/api'
 import FillBar from '../components/shared/FillBar'
 import { ConnectionBadge } from '../components/shared/StatusBadge'
 import { formatRelativeTime } from '../lib/utils'
-
-interface BinDoc {
-  _id: string
-  _creationTime: number
-  name: string
-  binId: string
-  facilityId: string
-  department: string
-  type: string
-  wasteStream: string
-  fillLevel: number
-  status: string
-  deviceId?: string
-  lastCollection?: number
-  lastDisposal?: number
-  openAlerts: number
-  warningThreshold: number
-  criticalThreshold: number
-}
 
 interface DeviceDoc {
   _id: string

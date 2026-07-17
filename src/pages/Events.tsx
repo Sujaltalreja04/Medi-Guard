@@ -1,11 +1,9 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
 import { useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import { DecisionBadge } from '../components/shared/StatusBadge'
 import { formatRelativeTime, formatConfidence } from '../lib/utils'
 
-const reviewStatusOptions = ['PENDING', 'REVIEWED']
 const decisionOptions = [
   'CORRECT', 'PROBABLE_VIOLATION', 'CRITICAL_VIOLATION', 'LOW_CONFIDENCE_REVIEW',
   'UNKNOWN_ITEM', 'AI_ANALYSIS_FAILED', 'SENSOR_ERROR', 'BIN_CAPACITY_WARNING',

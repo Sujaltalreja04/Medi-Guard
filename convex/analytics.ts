@@ -71,7 +71,6 @@ export const overview = query({
     const alerts = await ctx.db.query('alerts').collect()
 
     const now = Date.now()
-    const today = new Date(now).setHours(0, 0, 0, 0)
 
     const violations = events.filter((e) =>
       e.decision === 'CRITICAL_VIOLATION' || e.decision === 'PROBABLE_VIOLATION' || e.reviewDecision === 'CONFIRMED_VIOLATION'

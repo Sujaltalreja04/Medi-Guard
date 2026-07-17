@@ -1,4 +1,4 @@
-import { Search, Bell, ChevronDown, Circle } from 'lucide-react'
+import { Search, Bell, ChevronDown } from 'lucide-react'
 import { useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { useState } from 'react'

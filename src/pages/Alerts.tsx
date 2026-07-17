@@ -12,12 +12,6 @@ const statusVariant: Record<string, 'green' | 'red' | 'amber' | 'blue' | 'gray'>
   RESOLVED: 'green',
 }
 
-const detectionClasses = [
-  'SYRINGE', 'NEEDLE_SHARP', 'GLOVES', 'FACE_MASK', 'GAUZE_DRESSING',
-  'MEDICINE_VIAL', 'AMPOULE', 'PLASTIC_BOTTLE', 'MEDICAL_CONTAINER',
-  'PAPER_PACKAGING', 'GENERAL_WASTE', 'UNKNOWN_ITEM',
-]
-
 function isToday(ts: number | undefined) {
   if (!ts) return false
   const today = new Date().setHours(0, 0, 0, 0)

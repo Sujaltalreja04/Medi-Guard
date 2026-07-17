@@ -12,7 +12,7 @@ export const analyzeWasteImage = action({
     binId: v.id('bins'),
   },
   handler: async (ctx, args) => {
-    const apiKey = (process as any).env?.NVIDIA_API_KEY
+    const apiKey = (globalThis as any).process?.env?.NVIDIA_API_KEY
     if (!apiKey) throw new Error('NVIDIA_API_KEY not configured')
 
     const bin = await ctx.runQuery(('bins:getById' as any), { id: args.binId })
