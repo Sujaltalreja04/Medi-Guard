@@ -1,40 +1,40 @@
 interface StatusBadgeProps {
   label: string
-  variant?: 'green' | 'red' | 'amber' | 'blue' | 'gray' | 'orange' | 'emerald'
+  variant?: 'green' | 'red' | 'amber' | 'blue' | 'gray' | 'orange' | 'emerald' | 'yellow'
   dot?: boolean
 }
 
-const variants = {
-  green: 'bg-green-100 text-green-800',
-  red: 'bg-red-100 text-red-800',
-  amber: 'bg-amber-100 text-amber-800',
-  blue: 'bg-blue-100 text-blue-800',
-  gray: 'bg-gray-100 text-gray-800',
-  orange: 'bg-orange-100 text-orange-800',
-  emerald: 'bg-emerald-100 text-emerald-800',
-}
-
-const dotColors = {
-  green: 'bg-green-500',
-  red: 'bg-red-500',
-  amber: 'bg-amber-500',
-  blue: 'bg-blue-500',
-  gray: 'bg-gray-500',
-  orange: 'bg-orange-500',
-  emerald: 'bg-emerald-500',
+const variants: Record<string, { bg: string; color: string; dot: string }> = {
+  green:   { bg: 'rgba(34,197,94,0.12)',   color: '#4ade80', dot: '#22c55e' },
+  red:     { bg: 'rgba(239,68,68,0.12)',   color: '#f87171', dot: '#ef4444' },
+  amber:   { bg: 'rgba(245,158,11,0.12)',  color: '#fbbf24', dot: '#f59e0b' },
+  blue:    { bg: 'rgba(59,130,246,0.12)',  color: '#60a5fa', dot: '#3b82f6' },
+  gray:    { bg: 'rgba(100,116,139,0.12)', color: '#94a3b8', dot: '#64748b' },
+  orange:  { bg: 'rgba(249,115,22,0.12)', color: '#fb923c', dot: '#f97316' },
+  emerald: { bg: 'rgba(16,185,129,0.12)', color: '#34d399', dot: '#10b981' },
+  yellow:  { bg: 'rgba(234,179,8,0.12)',  color: '#facc15', dot: '#eab308' },
 }
 
 export default function StatusBadge({ label, variant = 'gray', dot }: StatusBadgeProps) {
+  const cfg = variants[variant] || variants.gray
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${variants[variant]}`}>
-      {dot && <span className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`} />}
+    <span
+      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+      style={{ background: cfg.bg, color: cfg.color }}
+    >
+      {dot && (
+        <span
+          className="w-1.5 h-1.5 rounded-full shrink-0"
+          style={{ background: cfg.dot }}
+        />
+      )}
       {label}
     </span>
   )
 }
 
 export function SeverityBadge({ severity }: { severity: string }) {
-  const map: Record<string, { label: string; variant: 'red' | 'orange' | 'amber' | 'blue' | 'gray' }> = {
+  const map: Record<string, { label: string; variant: StatusBadgeProps['variant'] }> = {
     CRITICAL: { label: 'Critical', variant: 'red' },
     HIGH: { label: 'High', variant: 'orange' },
     MEDIUM: { label: 'Medium', variant: 'amber' },
@@ -46,7 +46,7 @@ export function SeverityBadge({ severity }: { severity: string }) {
 }
 
 export function ConnectionBadge({ connection }: { connection: string }) {
-  const map: Record<string, { label: string; variant: 'green' | 'red' | 'amber' }> = {
+  const map: Record<string, { label: string; variant: StatusBadgeProps['variant'] }> = {
     ONLINE: { label: 'Online', variant: 'green' },
     OFFLINE: { label: 'Offline', variant: 'red' },
     WARNING: { label: 'Warning', variant: 'amber' },
@@ -56,7 +56,7 @@ export function ConnectionBadge({ connection }: { connection: string }) {
 }
 
 export function DecisionBadge({ decision }: { decision: string }) {
-  const map: Record<string, { label: string; variant: 'green' | 'red' | 'amber' | 'yellow' | 'gray' | 'orange' }> = {
+  const map: Record<string, { label: string; variant: StatusBadgeProps['variant'] }> = {
     CORRECT: { label: 'Correct', variant: 'green' },
     PROBABLE_VIOLATION: { label: 'Probable Violation', variant: 'amber' },
     CRITICAL_VIOLATION: { label: 'Critical Violation', variant: 'red' },
@@ -67,5 +67,5 @@ export function DecisionBadge({ decision }: { decision: string }) {
     DEVICE_OFFLINE: { label: 'Device Offline', variant: 'gray' },
   }
   const m = map[decision] || { label: decision, variant: 'gray' as const }
-  return <StatusBadge label={m.label} variant={m.variant as any} dot />
+  return <StatusBadge label={m.label} variant={m.variant} dot />
 }

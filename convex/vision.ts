@@ -12,8 +12,8 @@ export const analyzeWasteImage = action({
     binId: v.id('bins'),
   },
   handler: async (ctx, args) => {
-    const apiKey = (globalThis as any).process?.env?.NVIDIA_API_KEY
-    if (!apiKey) throw new Error('NVIDIA_API_KEY not configured')
+    const apiKey = process.env.NVIDIA_API_KEY
+    if (!apiKey) throw new Error('NVIDIA_API_KEY not configured — set it in the Convex dashboard under Settings > Environment Variables')
 
     const bin = await ctx.runQuery(('bins:getById' as any), { id: args.binId })
     if (!bin) throw new Error('Bin not found')

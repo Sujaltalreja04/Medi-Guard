@@ -1,5 +1,5 @@
 const INVOKE_URL = 'https://integrate.api.nvidia.com/v1/chat/completions'
-const MODEL = 'minimaxai/minimax-m3'
+const MODEL = 'microsoft/phi-3.5-vision-instruct'
 
 const ALLOWED_CLASSES = [
   'SYRINGE', 'NEEDLE_SHARP', 'GLOVES', 'FACE_MASK',
@@ -139,13 +139,13 @@ export async function analyzeImage(
   requiresReview: boolean
   detections: { class: string; confidence: number; visualDescription: string; riskIndicator: string; uncertaintyReason: string | null }[]
 }> {
+  // Note: AbortSignal.timeout is NOT available in Convex's runtime — omit it entirely
   const response = await fetch(INVOKE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
-    signal: AbortSignal.timeout(30000),
     body: JSON.stringify({
       model: MODEL,
       messages: [
@@ -153,25 +153,40 @@ export async function analyzeImage(
         {
           role: 'user',
           content: [
-            { type: 'text', text: 'Analyze this medical waste image and return structured classification.' },
-            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${imageBase64}` } },
+            {
+              type: 'text',
+              text: 'Analyze this medical waste image and return ONLY valid JSON with the structure described in the system prompt.',
+            },
+            {
+              type: 'image_url',
+              image_url: { url: `data:${mimeType};base64,${imageBase64}` },
+            },
           ],
         },
       ],
       temperature: 0.1,
       max_tokens: 1024,
-      response_format: { type: 'json_object' },
+      stream: false,
     }),
   })
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => 'Unknown error')
-    throw new Error(`NVIDIA API error ${response.status}: ${errorText}`)
+    throw new Error(`NVIDIA API error ${response.status}: ${errorText.slice(0, 300)}`)
   }
 
   const data = await response.json()
   const content = data.choices?.[0]?.message?.content
-  if (!content) throw new Error('Empty response from model')
+  if (!content) {
+    // Return a safe fallback rather than crashing
+    return {
+      primaryClass: 'UNKNOWN_ITEM',
+      overallConfidence: 0,
+      imageQuality: 'POOR',
+      requiresReview: true,
+      detections: [],
+    }
+  }
 
   const raw = parseResponse(content)
 

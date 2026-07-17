@@ -24,18 +24,27 @@ const decisionIcons: Record<string, any> = {
   BIN_CAPACITY_WARNING: Trash2,
 }
 
-const decisionColors: Record<string, string> = {
-  CORRECT: 'text-green-600 bg-green-50 border-green-200',
-  CRITICAL_VIOLATION: 'text-red-600 bg-red-50 border-red-200',
-  PROBABLE_VIOLATION: 'text-amber-600 bg-amber-50 border-amber-200',
-  AI_ANALYSIS_FAILED: 'text-red-600 bg-red-50 border-red-200',
-  DEVICE_OFFLINE: 'text-gray-600 bg-gray-50 border-gray-200',
+const decisionStyles: Record<string, { border: string; iconBg: string; iconColor: string }> = {
+  CORRECT:           { border: 'rgba(34,197,94,0.2)',  iconBg: 'rgba(34,197,94,0.15)',  iconColor: '#4ade80' },
+  CRITICAL_VIOLATION:{ border: 'rgba(239,68,68,0.25)', iconBg: 'rgba(239,68,68,0.15)',  iconColor: '#f87171' },
+  PROBABLE_VIOLATION:{ border: 'rgba(245,158,11,0.2)', iconBg: 'rgba(245,158,11,0.15)', iconColor: '#fbbf24' },
+  AI_ANALYSIS_FAILED:{ border: 'rgba(239,68,68,0.25)', iconBg: 'rgba(239,68,68,0.15)',  iconColor: '#f87171' },
+  DEVICE_OFFLINE:    { border: 'rgba(100,116,139,0.2)',iconBg: 'rgba(100,116,139,0.1)', iconColor: '#94a3b8' },
+}
+
+const labels: Record<string, string> = {
+  CORRECT: 'Correct Disposal',
+  CRITICAL_VIOLATION: 'Critical Violation',
+  PROBABLE_VIOLATION: 'Probable Violation',
+  DEVICE_OFFLINE: 'Device Offline',
+  DEVICE_RECONNECTED: 'Device Reconnected',
+  BIN_CAPACITY_WARNING: 'Bin Capacity Warning',
 }
 
 export default function ActivityFeed({ events }: ActivityFeedProps) {
   if (events.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-400 text-sm">
+      <div className="text-center py-8 text-sm" style={{ color: '#475569' }}>
         No recent events
       </div>
     )
@@ -45,42 +54,42 @@ export default function ActivityFeed({ events }: ActivityFeedProps) {
     <div className="space-y-2">
       {events.map((event) => {
         const Icon = decisionIcons[event.decision] || AlertTriangle
-        const borderColor = decisionColors[event.decision] || 'text-gray-600 bg-gray-50 border-gray-200'
+        const style = decisionStyles[event.decision] || decisionStyles.DEVICE_OFFLINE
 
         return (
           <div
             key={event._id}
-            className={`flex items-start gap-3 p-3 rounded-lg border ${borderColor}`}
+            className="flex items-start gap-3 p-3 rounded-xl transition-all"
+            style={{
+              background: 'rgba(15, 22, 41, 0.6)',
+              border: `1px solid ${style.border}`,
+            }}
           >
-            <div className="p-1.5 rounded-full bg-white shrink-0">
-              <Icon size={16} />
+            <div
+              className="p-1.5 rounded-lg shrink-0"
+              style={{ background: style.iconBg, color: style.iconColor }}
+            >
+              <Icon size={15} />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-900">
-                {event.decision === 'CORRECT' && 'Correct Disposal'}
-                {event.decision === 'CRITICAL_VIOLATION' && 'Critical Violation'}
-                {event.decision === 'PROBABLE_VIOLATION' && 'Probable Violation'}
-                {event.decision === 'DEVICE_OFFLINE' && 'Device Offline'}
-                {event.decision === 'DEVICE_RECONNECTED' && 'Device Reconnected'}
-                {event.decision === 'BIN_CAPACITY_WARNING' && 'Bin Capacity Warning'}
-                {![
-                  'CORRECT', 'CRITICAL_VIOLATION', 'PROBABLE_VIOLATION',
-                  'DEVICE_OFFLINE', 'DEVICE_RECONNECTED', 'BIN_CAPACITY_WARNING',
-                ].includes(event.decision) && event.decision}
+              <p className="text-sm font-semibold" style={{ color: '#e2e8f0' }}>
+                {labels[event.decision] || event.decision}
               </p>
               {event.detectedClass && (
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>
                   {event.detectedClass.replace(/_/g, ' ')} detected
                 </p>
               )}
-              <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
+              <div className="flex items-center gap-2 mt-1 text-xs" style={{ color: '#475569' }}>
                 <span>{event.department}</span>
                 <span>·</span>
                 <span>{formatRelativeTime(event.createdAt)}</span>
                 {event.confidence && (
                   <>
                     <span>·</span>
-                    <span className="font-medium">{Math.round(event.confidence * 100)}%</span>
+                    <span className="font-semibold" style={{ color: style.iconColor }}>
+                      {Math.round(event.confidence * 100)}%
+                    </span>
                   </>
                 )}
               </div>
